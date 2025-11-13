@@ -150,31 +150,193 @@ The first time the backend starts, it will create all necessary tables in your d
 
 ## Configuration
 
-### Setting Discord Bot Token
+### Where to Place the Bot Token
 
-The Discord bot token is stored in the database, not in the `.env` file. Set it via:
+**IMPORTANT:** The Discord bot token is stored in the **database** (`bot_config` table), NOT in the `.env` file. This is a security feature.
 
-1. **Using the Web Interface:**
-   - Start the bot: `npm run dev`
-   - Open http://localhost:3000
-   - Go to Settings → Bot Token
-   - Enter your Discord bot token
+#### Method 1: Web Interface (Recommended)
 
-2. **Using pgAdmin:**
-   - Open Query Tool
-   - Run:
-     ```sql
-     INSERT INTO bot_config (key, value) 
-     VALUES ('discord_bot_token', 'YOUR_BOT_TOKEN_HERE')
-     ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
-     ```
+1. Start the bot: `npm run dev`
+2. Open http://localhost:3000 in your browser
+3. Navigate to **Settings** → **Bot Token**
+4. Enter your Discord bot token
+5. Click Save
 
-3. **Using API:**
-   ```bash
-   curl -X POST http://localhost:5000/api/bot/token \
-     -H "Content-Type: application/json" \
-     -d '{"token": "YOUR_BOT_TOKEN_HERE"}'
+#### Method 2: Using pgAdmin
+
+1. Open pgAdmin and connect to your database
+2. Right-click your database → **Query Tool**
+3. Run this SQL command:
+   ```sql
+   INSERT INTO bot_config (key, value) 
+   VALUES ('discord_bot_token', 'YOUR_BOT_TOKEN_HERE')
+   ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
    ```
+4. Replace `YOUR_BOT_TOKEN_HERE` with your actual Discord bot token
+5. Click **Execute** (F5)
+
+#### Method 3: Using API (Command Line)
+
+```bash
+curl -X POST http://localhost:5000/api/bot/token \
+  -H "Content-Type: application/json" \
+  -d '{"token": "YOUR_BOT_TOKEN_HERE"}'
+```
+
+#### Getting Your Discord Bot Token
+
+1. Go to [Discord Developer Portal](https://discord.com/developers/applications)
+2. Create a new application or select an existing one
+3. Go to **Bot** section
+4. Click **Reset Token** or **Copy** to get your token
+5. **Never share your token publicly!**
+
+### AI Provider Configuration
+
+The bot supports multiple AI providers. Configure them in the web interface or database:
+
+#### Supported AI Providers
+
+1. **DeepSeek** (Cloud) - Requires API key
+2. **Ollama** (Local) - Free, runs on your machine
+3. **LM Studio** (Local) - GUI for local models
+4. **LocalAI** (Local) - Self-hosted AI API
+
+#### Setting Up Ollama (Recommended for Local Use)
+
+**Ollama is free and runs entirely on your computer - no API keys needed!**
+
+1. **Install Ollama:**
+   - Download from [ollama.ai](https://ollama.ai)
+   - Install and run Ollama
+   - Ollama runs on `http://localhost:11434` by default
+
+2. **Download a Model:**
+   ```bash
+   # Download a model (examples)
+   ollama pull llama2
+   ollama pull mistral
+   ollama pull dolphin-phi
+   ollama pull qwen2.5
+   ```
+
+3. **Configure in Bot:**
+   - Open web interface: http://localhost:3000
+   - Go to **AI Config** → **Global Settings**
+   - Set **Provider:** `Ollama`
+   - Set **Provider URL:** `http://localhost:11434` (default)
+   - Set **Model:** `llama2:latest` (or your chosen model)
+   - Click Save
+
+4. **Model Name Format:**
+   - Ollama models use format: `model-name:tag`
+   - Examples: `llama2:latest`, `mistral:7b`, `dolphin-phi:latest`
+
+#### Setting Up DeepSeek (Cloud Provider)
+
+1. **Get API Key:**
+   - Go to [DeepSeek Platform](https://platform.deepseek.com)
+   - Sign up/login
+   - Navigate to API Keys section
+   - Create a new API key
+
+2. **Configure in Bot:**
+   - Open web interface: http://localhost:3000
+   - Go to **AI Config** → **Global Settings**
+   - Set **Provider:** `DeepSeek`
+   - Set **DeepSeek API Key:** (your API key)
+   - Set **Model:** `deepseek-chat` or `deepseek-coder`
+   - Click Save
+
+3. **Available Models:**
+   - `deepseek-chat` - General purpose chat
+   - `deepseek-coder` - Code-focused model
+
+#### Setting Up LM Studio (Local GUI)
+
+1. **Install LM Studio:**
+   - Download from [lmstudio.ai](https://lmstudio.ai)
+   - Install and open LM Studio
+
+2. **Download a Model:**
+   - Use LM Studio's model browser
+   - Download any compatible model
+   - Load the model in LM Studio
+
+3. **Start Local Server:**
+   - In LM Studio, go to **Local Server** tab
+   - Click **Start Server**
+   - Default URL: `http://localhost:1234/v1`
+
+4. **Configure in Bot:**
+   - Open web interface: http://localhost:3000
+   - Go to **AI Config** → **Global Settings**
+   - Set **Provider:** `LM Studio`
+   - Set **Provider URL:** `http://localhost:1234/v1`
+   - Set **Model:** (the model name you loaded in LM Studio)
+   - Click Save
+
+#### Setting Up LocalAI (Self-Hosted)
+
+1. **Install LocalAI:**
+   - Follow [LocalAI documentation](https://localai.io)
+   - Start LocalAI server
+   - Default URL: `http://localhost:8080/v1`
+
+2. **Configure in Bot:**
+   - Open web interface: http://localhost:3000
+   - Go to **AI Config** → **Global Settings**
+   - Set **Provider:** `LocalAI`
+   - Set **Provider URL:** `http://localhost:8080/v1`
+   - Set **Model:** (your LocalAI model name)
+   - Click Save
+
+#### AI Personalities
+
+The bot supports different AI personalities:
+- **Normal** - Helpful and friendly
+- **Rude** - Toxic and aggressive (for gaming servers)
+- **Professional** - Formal and business-like
+- **Friendly** - Warm and enthusiastic
+- **Sarcastic** - Witty and ironic
+
+Set personality in **AI Config** → **Channel Settings** per channel.
+
+#### Configuring AI via Database (pgAdmin)
+
+You can also configure AI settings directly in the database:
+
+```sql
+-- Set AI Provider
+INSERT INTO bot_config (key, value) 
+VALUES ('ai_provider', 'ollama')
+ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
+
+-- Set AI Model
+INSERT INTO bot_config (key, value) 
+VALUES ('ai_model', 'llama2:latest')
+ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
+
+-- Set Provider URL (for local providers)
+INSERT INTO bot_config (key, value) 
+VALUES ('ai_provider_url', 'http://localhost:11434')
+ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
+
+-- Set DeepSeek API Key (if using DeepSeek)
+INSERT INTO bot_config (key, value) 
+VALUES ('deepseek_api_key', 'YOUR_API_KEY')
+ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
+
+-- Set AI Personality
+INSERT INTO bot_config (key, value) 
+VALUES ('ai_personality', 'normal')
+ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
+
+-- Set Temperature (0.0 to 2.0, higher = more creative)
+INSERT INTO bot_config (key, value) 
+VALUES ('ai_temperature', '0.7')
+ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
+```
 
 ### Bot Permissions
 
