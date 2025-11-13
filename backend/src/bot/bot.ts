@@ -1514,7 +1514,7 @@ async function registerSlashCommands(client: Client, token: string) {
       .addStringOption(option =>
         option
           .setName('text')
-          .setDescription('Text for the bot to say (supports emotion tags like <laugh>, <cry> for Maya1)')
+          .setDescription('Text for the bot to say (supports emotion tags like <laugh>, <cry>)')
           .setRequired(true)
       )
       .addStringOption(option =>
@@ -1526,7 +1526,7 @@ async function registerSlashCommands(client: Client, token: string) {
       .addStringOption(option =>
         option
           .setName('voice')
-          .setDescription('Voice description for Maya1 (e.g., "Male voice, warm tone" or "Female, energetic")')
+          .setDescription('Voice description (e.g., "Male voice, warm tone" or "Female, energetic")')
           .setRequired(false)
       ),
     new SlashCommandBuilder()
