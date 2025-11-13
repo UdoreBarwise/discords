@@ -16,7 +16,7 @@ A comprehensive Discord bot with a modern web interface for managing all bot fea
 
 ## Features
 
-- **AI Chat Integration** - Multiple AI providers (DeepSeek, Ollama, LM Studio, LocalAI) with customizable personalities
+- **AI Chat Integration** - Multiple AI providers (DeepSeek, Ollama) with customizable personalities
 - **Leveling System** - XP tracking, level rewards, and role assignments
 - **Ticket System** - Support ticket management with embed messages
 - **Dice Game** - Multiplayer dice rolling game with cooldowns
@@ -47,9 +47,7 @@ A comprehensive Discord bot with a modern web interface for managing all bot fea
 ### AI Provider Requirements
 
 **For Local AI (No API Keys Needed):**
-- **Ollama** - Free, runs locally, no API keys required
-- **LM Studio** - Free GUI, runs locally, no API keys required
-- **LocalAI** - Self-hosted, no API keys required
+- **Ollama** - Free, runs locally, no API keys required (Recommended for beginners)
 
 **For Cloud AI (API Key Required):**
 - **DeepSeek** - Requires API key from [DeepSeek Platform](https://platform.deepseek.com)
@@ -205,14 +203,12 @@ curl -X POST http://localhost:5000/api/bot/token \
 
 ### AI Provider Configuration
 
-The bot supports multiple AI providers. Configure them in the web interface or database:
+The bot supports two AI providers. Configure them in the web interface or database:
 
 #### Supported AI Providers
 
-1. **DeepSeek** (Cloud) - Requires API key
-2. **Ollama** (Local) - Free, runs on your machine
-3. **LM Studio** (Local) - GUI for local models
-4. **LocalAI** (Local) - Self-hosted AI API
+1. **Ollama** (Local) - Free, runs on your machine, no API keys needed
+2. **DeepSeek** (Cloud) - Requires API key, cloud-based
 
 #### Setting Up Ollama (Recommended for Local Use)
 
@@ -225,11 +221,15 @@ The bot supports multiple AI providers. Configure them in the web interface or d
 
 2. **Download a Model:**
    ```bash
-   # Download a model (examples)
-   ollama pull llama2
-   ollama pull mistral
-   ollama pull dolphin-phi
-   ollama pull qwen2.5
+   # Popular models (choose based on your needs and hardware)
+   ollama pull llama2              # Meta's Llama 2 (7B, 13B, 70B variants)
+   ollama pull llama3              # Meta's Llama 3 (latest, recommended)
+   ollama pull mistral             # Mistral AI (7B, efficient)
+   ollama pull dolphin-phi         # Uncensored model (good for gaming)
+   ollama pull qwen2.5             # Alibaba's Qwen 2.5
+   ollama pull gemma               # Google's Gemma
+   ollama pull codellama           # Code-focused model
+   ollama pull phi3                # Microsoft's Phi-3 (small, fast)
    ```
 
 3. **Configure in Bot:**
@@ -237,12 +237,24 @@ The bot supports multiple AI providers. Configure them in the web interface or d
    - Go to **AI Config** → **Global Settings**
    - Set **Provider:** `Ollama`
    - Set **Provider URL:** `http://localhost:11434` (default)
-   - Set **Model:** `llama2:latest` (or your chosen model)
+   - Set **Model:** `llama3:latest` (or your chosen model)
    - Click Save
 
-4. **Model Name Format:**
-   - Ollama models use format: `model-name:tag`
-   - Examples: `llama2:latest`, `mistral:7b`, `dolphin-phi:latest`
+4. **Ollama Model Name Format:**
+   - Format: `model-name:tag`
+   - Examples: 
+     - `llama3:latest` - Latest Llama 3 model
+     - `llama3:8b` - Llama 3 8B parameter version
+     - `mistral:7b` - Mistral 7B model
+     - `dolphin-phi:latest` - Latest Dolphin Phi model
+     - `codellama:13b` - CodeLlama 13B model
+
+5. **Recommended Models by Use Case:**
+   - **General Chat:** `llama3:latest`, `mistral:latest`
+   - **Gaming/Toxic:** `dolphin-phi:latest`, `llama3:latest`
+   - **Code:** `codellama:latest`, `qwen2.5:latest`
+   - **Fast/Small:** `phi3:latest`, `gemma:2b`
+   - **Best Quality:** `llama3:70b`, `mistral:7b`
 
 #### Setting Up DeepSeek (Cloud Provider)
 
@@ -260,48 +272,17 @@ The bot supports multiple AI providers. Configure them in the web interface or d
    - Set **Model:** `deepseek-chat` or `deepseek-coder`
    - Click Save
 
-3. **Available Models:**
-   - `deepseek-chat` - General purpose chat
-   - `deepseek-coder` - Code-focused model
+3. **DeepSeek Available Models:**
+   - **`deepseek-chat`** - General purpose chat model
+     - Best for: Conversations, Q&A, general assistance
+     - Supports: Long context, reasoning, multilingual
+   - **`deepseek-coder`** - Code-focused model
+     - Best for: Programming, code generation, debugging
+     - Supports: Multiple programming languages, code completion
 
-#### Setting Up LM Studio (Local GUI)
-
-1. **Install LM Studio:**
-   - Download from [lmstudio.ai](https://lmstudio.ai)
-   - Install and open LM Studio
-
-2. **Download a Model:**
-   - Use LM Studio's model browser
-   - Download any compatible model
-   - Load the model in LM Studio
-
-3. **Start Local Server:**
-   - In LM Studio, go to **Local Server** tab
-   - Click **Start Server**
-   - Default URL: `http://localhost:1234/v1`
-
-4. **Configure in Bot:**
-   - Open web interface: http://localhost:3000
-   - Go to **AI Config** → **Global Settings**
-   - Set **Provider:** `LM Studio`
-   - Set **Provider URL:** `http://localhost:1234/v1`
-   - Set **Model:** (the model name you loaded in LM Studio)
-   - Click Save
-
-#### Setting Up LocalAI (Self-Hosted)
-
-1. **Install LocalAI:**
-   - Follow [LocalAI documentation](https://localai.io)
-   - Start LocalAI server
-   - Default URL: `http://localhost:8080/v1`
-
-2. **Configure in Bot:**
-   - Open web interface: http://localhost:3000
-   - Go to **AI Config** → **Global Settings**
-   - Set **Provider:** `LocalAI`
-   - Set **Provider URL:** `http://localhost:8080/v1`
-   - Set **Model:** (your LocalAI model name)
-   - Click Save
+4. **Model Selection Guide:**
+   - Use `deepseek-chat` for Discord bot conversations
+   - Use `deepseek-coder` if your bot needs to help with code
 
 #### AI Personalities
 
@@ -329,7 +310,7 @@ INSERT INTO bot_config (key, value)
 VALUES ('ai_model', 'llama2:latest')
 ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
 
--- Set Provider URL (for local providers)
+-- Set Provider URL (for Ollama)
 INSERT INTO bot_config (key, value) 
 VALUES ('ai_provider_url', 'http://localhost:11434')
 ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
