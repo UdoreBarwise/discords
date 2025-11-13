@@ -1,77 +1,400 @@
 # KaasBot - Discord Bot Interface
 
-A clean, modern Discord bot interface with clear frontend/backend separation.
+A comprehensive Discord bot with a modern web interface for managing all bot features. Built with React frontend and Node.js backend, using PostgreSQL for data storage.
+
+## Table of Contents
+
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Database Setup with pgAdmin](#database-setup-with-pgadmin)
+- [Configuration](#configuration)
+- [Running the Bot](#running-the-bot)
+- [Database Schema](#database-schema)
+- [API Endpoints](#api-endpoints)
+- [Project Structure](#project-structure)
+
+## Features
+
+- **AI Chat Integration** - Multiple AI providers (DeepSeek, Ollama, LM Studio, LocalAI) with customizable personalities
+- **Leveling System** - XP tracking, level rewards, and role assignments
+- **Ticket System** - Support ticket management with embed messages
+- **Dice Game** - Multiplayer dice rolling game with cooldowns
+- **Wordle Game** - Word guessing game with daily challenges
+- **Auto Roles** - Reaction-based role assignment
+- **Auto Moderator** - Automated message filtering and moderation
+- **Welcome Messages** - Customizable welcome messages (text or embed)
+- **Exchange Rate Tracking** - Real-time currency exchange rate monitoring
+- **Scoreboard** - Game statistics and leaderboards
+- **Voting System** - Anonymous voting polls
+- **Steam Integration** - Link Discord users to Steam accounts
+- **YouTube Notifications** - Track YouTube channels for new videos
+- **X (Twitter) Notifications** - Track X accounts for new tweets
+- **Sports Tracking** - Formula 1 and other sports event tracking
+- **Events System** - Scheduled and random events with rewards
+- **Reminders** - Recurring reminders for users
+- **Meme Channel** - Auto-delete and auto-post memes
+- **Embed Builder** - Create and send custom Discord embeds
+- **Theme System** - Customizable UI themes stored in database
+
+## Prerequisites
+
+- **Node.js** (v18 or higher)
+- **PostgreSQL** (v12 or higher)
+- **Discord Bot Token** - Get from [Discord Developer Portal](https://discord.com/developers/applications)
+- **pgAdmin 4** (optional, for database management)
+
+## Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/UdoreBarwise/discords.git
+   cd discords
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm run install:all
+   ```
+
+3. **Set up environment variables:**
+   ```bash
+   cd backend
+   cp env.example .env
+   ```
+
+4. **Edit `.env` file with your configuration:**
+   ```env
+   PORT=5000
+   DB_HOST=localhost
+   DB_PORT=5432
+   DB_NAME=postgres
+   DB_USER=postgres
+   DB_PASSWORD=your_password_here
+   ```
+
+## Database Setup with pgAdmin
+
+### Step 1: Install PostgreSQL and pgAdmin
+
+1. Download and install PostgreSQL from [postgresql.org](https://www.postgresql.org/download/)
+2. During installation, set a password for the `postgres` user (remember this!)
+3. pgAdmin 4 is usually installed automatically with PostgreSQL
+
+### Step 2: Create Database in pgAdmin
+
+1. **Open pgAdmin 4**
+2. **Connect to your PostgreSQL server:**
+   - Right-click on "Servers" → "Create" → "Server"
+   - General tab: Name it "Local PostgreSQL" (or any name)
+   - Connection tab:
+     - Host: `localhost`
+     - Port: `5432`
+     - Maintenance database: `postgres`
+     - Username: `postgres`
+     - Password: (the password you set during installation)
+   - Click "Save"
+
+3. **Create a new database:**
+   - Expand your server → Right-click "Databases" → "Create" → "Database"
+   - Database name: `kaasbot` (or use `postgres` if you prefer)
+   - Owner: `postgres`
+   - Click "Save"
+
+### Step 3: Configure Connection
+
+Update your `backend/.env` file to match your PostgreSQL settings:
+
+```env
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=kaasbot          # or 'postgres' if you used the default database
+DB_USER=postgres
+DB_PASSWORD=your_postgres_password
+```
+
+### Step 4: Initialize Database Tables
+
+The bot will automatically create all required tables when it starts. Just run:
+
+```bash
+npm run dev
+```
+
+The first time the backend starts, it will create all necessary tables in your database.
+
+### Step 5: View Tables in pgAdmin
+
+1. In pgAdmin, expand your database
+2. Expand "Schemas" → "public" → "Tables"
+3. You should see all the bot's tables listed
+
+### Common pgAdmin Tasks
+
+**View Table Data:**
+- Right-click a table → "View/Edit Data" → "All Rows"
+
+**Run SQL Queries:**
+- Right-click your database → "Query Tool"
+- Type SQL queries and click "Execute" (F5)
+
+**Backup Database:**
+- Right-click database → "Backup..."
+- Choose filename and format
+- Click "Backup"
+
+**Restore Database:**
+- Right-click database → "Restore..."
+- Select backup file
+- Click "Restore"
+
+## Configuration
+
+### Setting Discord Bot Token
+
+The Discord bot token is stored in the database, not in the `.env` file. Set it via:
+
+1. **Using the Web Interface:**
+   - Start the bot: `npm run dev`
+   - Open http://localhost:3000
+   - Go to Settings → Bot Token
+   - Enter your Discord bot token
+
+2. **Using pgAdmin:**
+   - Open Query Tool
+   - Run:
+     ```sql
+     INSERT INTO bot_config (key, value) 
+     VALUES ('discord_bot_token', 'YOUR_BOT_TOKEN_HERE')
+     ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
+     ```
+
+3. **Using API:**
+   ```bash
+   curl -X POST http://localhost:5000/api/bot/token \
+     -H "Content-Type: application/json" \
+     -d '{"token": "YOUR_BOT_TOKEN_HERE"}'
+   ```
+
+### Bot Permissions
+
+Your Discord bot needs these permissions:
+- Send Messages
+- Embed Links
+- Attach Files
+- Read Message History
+- Manage Messages
+- Manage Channels
+- Manage Roles
+- Add Reactions
+- Use External Emojis
+
+**Invite URL:** `https://discord.com/api/oauth2/authorize?client_id=YOUR_CLIENT_ID&permissions=8&scope=bot%20applications.commands`
+
+## Running the Bot
+
+### Development Mode
+
+```bash
+# Run both frontend and backend
+npm run dev
+
+# Run only frontend
+npm run dev:frontend
+
+# Run only backend
+npm run dev:backend
+```
+
+- **Frontend:** http://localhost:3000
+- **Backend API:** http://localhost:5000
+
+### Production Mode
+
+```bash
+# Build frontend
+npm run build
+
+# Start backend (with PM2 or similar)
+cd backend
+npm start
+```
+
+## Database Schema
+
+The bot uses PostgreSQL with the following main tables:
+
+### Core Tables
+
+- **`settings`** - General application settings (themes, etc.)
+- **`bot_config`** - Bot configuration (Discord token, AI settings, etc.)
+
+### Feature-Specific Tables
+
+#### AI System
+- **`ai_config`** - Per-guild AI configuration (rate limits, allowed channels)
+- **`ai_presets`** - AI model presets (provider, model, temperature)
+- **`ai_training`** - AI training data from user reactions
+- **`ai_rate_limits`** - User rate limit tracking
+
+#### Leveling System
+- **`leveling_config`** - Leveling system configuration per guild
+- **`user_levels`** - User XP and level tracking
+- **`level_role_rewards`** - Role rewards for specific levels
+
+#### Ticket System
+- **`ticket_config`** - Ticket system configuration per guild
+- **`tickets`** - Active tickets
+- **`ticket_logs`** - Closed ticket history and transcripts
+
+#### Games
+- **`dice_game_config`** - Dice game configuration
+- **`dice_game_cooldowns`** - User cooldowns for dice game
+- **`wordle_config`** - Wordle game configuration
+- **`wordle_cooldowns`** - User cooldowns for Wordle
+- **`wordle_games`** - Active Wordle games
+- **`game_scores`** - Win/loss statistics for all games
+- **`scoreboard_config`** - Scoreboard configuration
+
+#### Auto Features
+- **`auto_roles_config`** - Reaction role configuration
+- **`auto_moderator_config`** - Auto moderation settings
+
+#### Messaging
+- **`welcome_message_config`** - Welcome message settings
+- **`meme_config`** - Meme channel configuration
+
+#### Notifications
+- **`youtube_notification_config`** - YouTube notification settings
+- **`youtube_channels`** - Tracked YouTube channels
+- **`x_notification_config`** - X (Twitter) notification settings
+- **`x_accounts`** - Tracked X accounts
+
+#### Other Features
+- **`exchange_rate_config`** - Currency exchange rate settings
+- **`voting_polls`** - Voting poll definitions
+- **`voting_votes`** - Anonymous votes
+- **`steam_users`** - Discord to Steam account links
+- **`events_config`** - Event system configuration
+- **`events`** - Event definitions
+- **`active_events`** - Currently running events
+- **`event_participants`** - User participation in events
+- **`event_history`** - Completed event history
+- **`sports_config`** - Sports tracking configuration
+- **`reminders`** - User reminders
+
+### Viewing Database Schema in pgAdmin
+
+1. Open pgAdmin and connect to your database
+2. Expand: Database → Schemas → public → Tables
+3. Right-click any table → "Properties" to see column details
+4. Use Query Tool to run:
+   ```sql
+   -- List all tables
+   SELECT table_name 
+   FROM information_schema.tables 
+   WHERE table_schema = 'public';
+   
+   -- View table structure
+   SELECT column_name, data_type, is_nullable
+   FROM information_schema.columns
+   WHERE table_name = 'bot_config';
+   ```
+
+## API Endpoints
+
+### Bot Configuration
+- `GET /api/bot/config` - Get bot configuration
+- `POST /api/bot/token` - Set Discord bot token
+- `GET /api/bot/status` - Get bot status
+
+### AI Configuration
+- `GET /api/ai/config/:guildId` - Get AI config for guild
+- `POST /api/ai/config/:guildId` - Update AI config
+- `GET /api/ai/presets` - List AI presets
+- `POST /api/ai/presets` - Create AI preset
+
+### Discord
+- `GET /api/discord/guilds` - List bot's guilds
+- `GET /api/discord/guilds/:guildId` - Get guild details
+- `GET /api/discord/guilds/:guildId/channels` - Get guild channels
+- `GET /api/discord/guilds/:guildId/roles` - Get guild roles
+
+### Embed Builder
+- `POST /api/embed/send` - Send embed message
+
+See `backend/src/api/routes.ts` for complete API documentation.
 
 ## Project Structure
 
 ```
 kaasbot/
-├── frontend/          # React + TypeScript frontend
+├── frontend/              # React + TypeScript frontend
 │   ├── src/
 │   │   ├── components/    # Reusable UI components
 │   │   ├── pages/         # Page components
 │   │   ├── services/      # API service layer
-│   │   └── contexts/      # React contexts
+│   │   ├── contexts/      # React contexts
+│   │   └── types/         # TypeScript types
 │   └── package.json
-├── backend/           # Node.js + Express backend
+├── backend/               # Node.js + Express backend
 │   ├── src/
-│   │   ├── api/          # API routes and controllers
-│   │   ├── bot/          # Discord bot logic
-│   │   ├── database/     # Database setup and repositories
-│   │   └── services/     # Business logic services
+│   │   ├── api/           # API routes and controllers
+│   │   ├── bot/           # Discord bot logic
+│   │   ├── database/      # Database setup and repositories
+│   │   └── services/      # Business logic services
+│   ├── env.example        # Environment variables template
 │   └── package.json
-└── package.json       # Root workspace config
-```
-
-## Features
-
-- Clean separation: Frontend and backend in separate folders
-- Theme settings stored in database
-- Discord bot integration
-- Reusable components and services
-- Local development ready
-
-## Setup
-
-1. **Install dependencies:**
-   ```bash
-   npm run install:all
-   ```
-
-2. **Set up PostgreSQL database:**
-   - Make sure PostgreSQL is running locally
-   - Default settings: host=localhost, port=5432, database=postgres, user=postgres, password=1
-
-3. **Configure backend:**
-   ```bash
-   cd backend
-   cp env.example .env
-   # Edit .env if you need to change database settings or add your Discord bot token
-   ```
-
-4. **Run development servers:**
-   ```bash
-   npm run dev
-   ```
-   - Frontend: http://localhost:3000
-   - Backend: http://localhost:5000
-
-## Development
-
-- **Frontend only:** `npm run dev:frontend`
-- **Backend only:** `npm run dev:backend`
-- **Both:** `npm run dev`
-
-## Building
-
-```bash
-npm run build
+├── scripts/               # Development scripts
+└── package.json           # Root workspace config
 ```
 
 ## Tech Stack
 
 - **Frontend:** React, TypeScript, Vite
 - **Backend:** Node.js, Express, TypeScript
-- **Database:** PostgreSQL (pg)
-- **Bot:** discord.js
+- **Database:** PostgreSQL
+- **Bot Framework:** discord.js
+- **AI Providers:** DeepSeek, Ollama, LM Studio, LocalAI
 
+## Troubleshooting
+
+### Database Connection Issues
+
+**Error: "Connection refused"**
+- Ensure PostgreSQL is running
+- Check `DB_HOST` and `DB_PORT` in `.env`
+- Verify PostgreSQL service is started
+
+**Error: "password authentication failed"**
+- Verify `DB_USER` and `DB_PASSWORD` in `.env`
+- Check pgAdmin connection works with same credentials
+
+**Error: "database does not exist"**
+- Create database in pgAdmin (see Database Setup section)
+- Update `DB_NAME` in `.env`
+
+### Bot Not Starting
+
+1. Check Discord bot token is set in database:
+   ```sql
+   SELECT * FROM bot_config WHERE key = 'discord_bot_token';
+   ```
+
+2. Verify bot has correct permissions in Discord server
+
+3. Check backend logs for errors
+
+### Tables Not Created
+
+- Ensure database connection is working
+- Check backend logs for initialization errors
+- Manually run initialization by restarting backend
+
+## Support
+
+For issues, questions, or contributions, please open an issue on GitHub.
+
+## License
+
+[Add your license here]
