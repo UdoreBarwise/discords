@@ -44,6 +44,18 @@ A comprehensive Discord bot with a modern web interface for managing all bot fea
 - **Discord Bot Token** - Get from [Discord Developer Portal](https://discord.com/developers/applications)
 - **pgAdmin 4** (optional, for database management)
 
+### AI Provider Requirements
+
+**For Local AI (No API Keys Needed):**
+- **Ollama** - Free, runs locally, no API keys required
+- **LM Studio** - Free GUI, runs locally, no API keys required
+- **LocalAI** - Self-hosted, no API keys required
+
+**For Cloud AI (API Key Required):**
+- **DeepSeek** - Requires API key from [DeepSeek Platform](https://platform.deepseek.com)
+
+**Note:** You only need to install and configure ONE AI provider. Ollama is recommended for beginners as it's free and requires no API keys.
+
 ## Installation
 
 1. **Clone the repository:**
