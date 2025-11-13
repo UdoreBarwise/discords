@@ -1,0 +1,22 @@
+.voting-page {
+  padding: 2rem;
+}
+
+.voting-header {
+  margin-bottom: 2rem;
+}
+
+.voting-header h1 {
+  margin: 0 0 0.5rem 0;
+  color: var(--text-primary, #ffffff);
+}
+
+.voting-subtitle {
+  color: var(--text-secondary, #b0b0b0);
+  margin: 0;
+}
+
+.voting-content {
+  margin-top: 2rem;
+}
+

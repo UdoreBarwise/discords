@@ -1,0 +1,22 @@
+.dice-game-page {
+  padding: 2rem;
+}
+
+.dice-game-header {
+  margin-bottom: 2rem;
+}
+
+.dice-game-header h1 {
+  margin: 0 0 0.5rem 0;
+  color: var(--text-color, #fff);
+}
+
+.dice-game-subtitle {
+  color: var(--text-secondary, #ccc);
+  margin: 0;
+}
+
+.dice-game-content {
+  max-width: 800px;
+}
+

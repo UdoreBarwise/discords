@@ -1,0 +1,28 @@
+.meme-page {
+  min-height: 100vh;
+  background: var(--background-color, #242424);
+  padding: 2rem;
+}
+
+.meme-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.meme-header h1 {
+  margin: 0 0 0.5rem 0;
+  color: var(--text-color, #fff);
+  font-size: 2.5rem;
+}
+
+.meme-subtitle {
+  margin: 0;
+  color: var(--text-secondary, #ccc);
+  font-size: 1.1rem;
+}
+
+.meme-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+

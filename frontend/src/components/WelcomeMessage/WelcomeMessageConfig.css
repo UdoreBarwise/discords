@@ -1,0 +1,197 @@
+.welcome-message-config {
+  margin-bottom: 2rem;
+}
+
+.welcome-message-section {
+  margin-bottom: 1.5rem;
+}
+
+.welcome-message-section label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-color, #fff);
+}
+
+.welcome-message-section select,
+.welcome-message-section input[type="text"],
+.welcome-message-section input[type="url"],
+.welcome-message-section textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color, #333);
+  border-radius: 4px;
+  background-color: var(--input-bg, #2a2a2a);
+  color: var(--text-color, #fff);
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  font-family: inherit;
+}
+
+.welcome-message-section select:focus,
+.welcome-message-section input:focus,
+.welcome-message-section textarea:focus {
+  outline: none;
+  border-color: var(--primary-color, #4a9eff);
+}
+
+.welcome-message-section select:disabled,
+.welcome-message-section input:disabled,
+.welcome-message-section textarea:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.welcome-message-toggle-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.welcome-message-toggle-label {
+  display: block;
+  margin: 0;
+  font-weight: 600;
+  color: var(--text-color, #fff);
+  cursor: pointer;
+  user-select: none;
+}
+
+.welcome-message-toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 28px;
+  margin: 0;
+  cursor: pointer;
+}
+
+.welcome-message-toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.welcome-message-toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--input-bg, #2a2a2a);
+  border: 2px solid var(--border-color, #444);
+  transition: all 0.3s ease;
+  border-radius: 28px;
+}
+
+.welcome-message-toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 2px;
+  bottom: 2px;
+  background-color: var(--text-color, #fff);
+  transition: all 0.3s ease;
+  border-radius: 50%;
+}
+
+.welcome-message-toggle-switch input:checked + .welcome-message-toggle-slider {
+  background-color: var(--primary-color, #4a9eff);
+  border-color: var(--primary-color, #4a9eff);
+}
+
+.welcome-message-toggle-switch input:checked + .welcome-message-toggle-slider:before {
+  transform: translateX(24px);
+}
+
+.welcome-message-toggle-switch input:disabled + .welcome-message-toggle-slider {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.welcome-message-toggle-switch:hover input:not(:disabled) + .welcome-message-toggle-slider {
+  box-shadow: 0 0 0 4px rgba(74, 158, 255, 0.1);
+}
+
+.welcome-message-hint {
+  font-size: 0.875rem;
+  color: var(--text-secondary, #ccc);
+  margin-top: 0.25rem;
+  margin-bottom: 0;
+}
+
+.welcome-message-color-input {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.welcome-message-color-input input[type="color"] {
+  width: 60px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--border-color, #333);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.welcome-message-color-input input[type="text"] {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.welcome-message-actions {
+  margin-top: 2rem;
+}
+
+.welcome-message-button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+  font-size: 1rem;
+}
+
+.welcome-message-button.save {
+  background-color: var(--button-bg, #4a4a4a);
+  color: var(--text-color, #fff);
+}
+
+.welcome-message-button.save:hover:not(:disabled) {
+  background-color: var(--button-hover, #5a5a5a);
+}
+
+.welcome-message-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.welcome-message-info {
+  margin-top: 2rem;
+  padding: 1rem;
+  background-color: var(--card-bg, #2a2a2a);
+  border-radius: 4px;
+  border-left: 3px solid var(--primary-color, #4a9eff);
+}
+
+.welcome-message-info h3 {
+  margin: 0 0 0.75rem 0;
+  color: var(--heading-color, var(--primary-color, #4a9eff));
+}
+
+.welcome-message-info ul {
+  margin: 0;
+  padding-left: 1.5rem;
+  color: var(--text-secondary, #ccc);
+}
+
+.welcome-message-info li {
+  margin-bottom: 0.5rem;
+  color: var(--text-secondary, #ccc);
+}
+

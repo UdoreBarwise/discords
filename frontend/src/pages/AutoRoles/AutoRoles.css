@@ -1,0 +1,22 @@
+.auto-roles-page {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.auto-roles-header {
+  margin-bottom: 2rem;
+}
+
+.auto-roles-header h1 {
+  margin: 0 0 0.5rem 0;
+  color: var(--text-color, #fff);
+  font-size: 2rem;
+}
+
+.auto-roles-subtitle {
+  margin: 0;
+  color: var(--text-secondary, #ccc);
+  font-size: 1rem;
+}
+

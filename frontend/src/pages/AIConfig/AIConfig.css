@@ -1,0 +1,35 @@
+.ai-config-page {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.ai-config-header {
+  margin-bottom: 2rem;
+}
+
+.ai-config-header h1 {
+  margin: 0 0 0.5rem 0;
+  font-size: 2rem;
+  color: var(--heading-color, var(--primary-color, #4a9eff));
+  font-weight: 600;
+}
+
+.ai-config-subtitle {
+  margin: 0;
+  color: var(--text-secondary, #ccc);
+  font-size: 1.1rem;
+}
+
+.ai-config-content {
+  background: var(--card-bg, #2a2a2a);
+  border-radius: 8px;
+  padding: 0;
+}
+
+@media (max-width: 768px) {
+  .ai-config-page {
+    padding: 1rem;
+  }
+}
+

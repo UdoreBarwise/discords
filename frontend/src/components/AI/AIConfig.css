@@ -1,0 +1,108 @@
+.ai-config {
+  padding: 1.5rem;
+  background-color: var(--card-bg, #2a2a2a);
+  border-radius: 8px;
+}
+
+.ai-config-section {
+  margin-bottom: 1.5rem;
+}
+
+.ai-config-section.full-width {
+  width: 100%;
+}
+
+.ai-config-section label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-color, #fff);
+}
+
+.ai-config-section select,
+.ai-config-section input[type="number"],
+.ai-config-section input[type="text"] {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color, #333);
+  border-radius: 4px;
+  background-color: var(--input-bg, #1a1a1a);
+  color: var(--text-color, #fff);
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.ai-config-section select:focus,
+.ai-config-section input:focus {
+  outline: none;
+  border-color: var(--primary-color, #4a9eff);
+}
+
+.ai-config-hint {
+  margin: 0.5rem 0;
+  font-size: 0.85rem;
+  color: var(--text-secondary, #ccc);
+}
+
+.ai-config-multiselect {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.ai-config-tag {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border-color, #333);
+  border-left: 3px solid var(--border-color, #333);
+  border-radius: 4px;
+  background-color: var(--input-bg, #1a1a1a);
+  color: var(--text-color, #fff);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+}
+
+.ai-config-tag:hover {
+  background-color: var(--button-hover, #3a3a3a);
+  border-color: var(--primary-color, #4a9eff);
+}
+
+.ai-config-tag.selected {
+  background-color: var(--primary-color, #4a9eff);
+  border-color: var(--primary-color, #4a9eff);
+  color: white;
+}
+
+.ai-config-tag.selected.blocked {
+  background-color: var(--error-bg, #f44336);
+  border-color: var(--error-bg, #f44336);
+}
+
+.ai-config-actions {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.ai-config-save-button {
+  padding: 0.75rem 1.5rem;
+  background: var(--primary-color, #4a9eff);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.ai-config-save-button:hover:not(:disabled) {
+  background: var(--primary-hover, #3a8eef);
+}
+
+.ai-config-save-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+

@@ -1,0 +1,140 @@
+.settings-section {
+  margin-bottom: 1.5rem;
+  padding: 1.25rem;
+  background-color: var(--card-bg, #2a2a2a);
+  border-radius: 8px;
+}
+
+.settings-section h2 {
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  color: var(--heading-color, var(--primary-color, #4a9eff));
+  font-weight: 600;
+  cursor: default;
+  user-select: none;
+}
+
+.settings-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.settings-item > div {
+  flex: 1;
+}
+
+.settings-item label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-color, #fff);
+  cursor: default;
+  user-select: none;
+}
+
+.settings-description {
+  margin: 0;
+  color: var(--text-secondary, #ccc);
+  font-size: 0.9rem;
+}
+
+.settings-button {
+  padding: 0.5rem 1rem;
+  background-color: var(--button-bg, #4a4a4a);
+  color: var(--text-color, #fff);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+}
+
+.settings-button:hover {
+  background-color: var(--button-hover, #5a5a5a);
+}
+
+.settings-subsection {
+  padding: 1.5rem;
+  background-color: var(--input-bg, #2a2a2a);
+  border: 1px solid var(--border-color, #333);
+  border-radius: 8px;
+  position: relative;
+  overflow: visible;
+}
+
+.settings-subsection h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  color: var(--text-color, #fff);
+  font-weight: 600;
+}
+
+.settings-field {
+  margin-bottom: 1.5rem;
+}
+
+.settings-field label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-color, #fff);
+}
+
+.settings-field select,
+.settings-field input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color, #333);
+  border-radius: 4px;
+  background-color: var(--input-bg, #2a2a2a);
+  color: var(--text-color, #fff);
+  font-size: 1rem;
+  font-family: inherit;
+  position: relative;
+  z-index: 10;
+}
+
+.settings-field select {
+  z-index: 100;
+  cursor: pointer;
+}
+
+.settings-field select:focus {
+  z-index: 101;
+}
+
+.settings-field select option {
+  background-color: var(--input-bg, #2a2a2a);
+  color: var(--text-color, #fff);
+  padding: 0.5rem;
+}
+
+.settings-field select:focus,
+.settings-field input:focus {
+  outline: none;
+  border-color: var(--primary-color, #4a9eff);
+}
+
+.settings-save-button {
+  padding: 0.75rem 1.5rem;
+  background: var(--primary-color, #4a9eff);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.settings-save-button:hover:not(:disabled) {
+  background: var(--primary-hover, #3a8eef);
+}
+
+.settings-save-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+

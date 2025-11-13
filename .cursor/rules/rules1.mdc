@@ -1,0 +1,11 @@
+---
+alwaysApply: true
+use ui models 
+use clean code 
+OOP 
+seperation of conncern
+reuse components 
+MAKE sure new UI is managed by the theme selectior where we can set the primary secondary bacgkround etc colours 
+use resuable service 
+compnoents CLEAN 
+---

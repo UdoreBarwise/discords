@@ -1,0 +1,16 @@
+.x-notifications-page {
+  padding: 2rem;
+}
+
+.x-notifications-page h1 {
+  margin-bottom: 1rem;
+  color: var(--text-primary, #fff);
+}
+
+.page-description {
+  margin-bottom: 2rem;
+  color: var(--text-secondary, #aaa);
+  line-height: 1.6;
+}
+
+

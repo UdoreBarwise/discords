@@ -1,0 +1,34 @@
+.auto-moderator-page {
+  color: var(--text-color);
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  background: var(--background-color);
+}
+
+.auto-moderator-header {
+  margin-bottom: 2.5rem;
+}
+
+.auto-moderator-subtitle {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+}
+
+.auto-moderator-content {
+  background: var(--card-bg);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: 2rem;
+}
+
+@media (max-width: 768px) {
+  .auto-moderator-page {
+    padding: 1rem;
+  }
+
+  .auto-moderator-content {
+    padding: 1rem;
+  }
+}
+

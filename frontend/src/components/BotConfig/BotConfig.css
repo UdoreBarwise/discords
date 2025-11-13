@@ -1,0 +1,141 @@
+.bot-config {
+  margin-bottom: 2rem;
+}
+
+.bot-config-status {
+  margin-bottom: 1rem;
+}
+
+.status-indicator {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.status-indicator.active {
+  background-color: var(--success-bg, #4caf50);
+  color: var(--success-text, #fff);
+}
+
+.status-indicator.inactive {
+  background-color: var(--warning-bg, #ff9800);
+  color: var(--warning-text, #fff);
+}
+
+.bot-config-error {
+  padding: 0.75rem;
+  background-color: var(--error-bg, #f44336);
+  color: var(--error-text, #fff);
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.bot-config-success {
+  padding: 0.75rem;
+  background-color: var(--success-bg, #4caf50);
+  color: var(--success-text, #fff);
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.bot-config-input {
+  margin-bottom: 1.5rem;
+}
+
+.bot-config-input label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-color, #fff);
+}
+
+.bot-config-input input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color, #333);
+  border-radius: 4px;
+  background-color: var(--input-bg, #2a2a2a);
+  color: var(--text-color, #fff);
+  font-family: monospace;
+  margin-bottom: 1rem;
+}
+
+.bot-config-input input:focus {
+  outline: none;
+  border-color: var(--primary-color, #4a9eff);
+}
+
+.bot-config-input input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.bot-config-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.bot-config-button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.bot-config-button.save {
+  background-color: var(--button-bg, #4a4a4a);
+  color: var(--text-color, #fff);
+}
+
+.bot-config-button.save:hover:not(:disabled) {
+  background-color: var(--button-hover, #5a5a5a);
+}
+
+.bot-config-button.delete {
+  background-color: var(--error-bg, #f44336);
+  color: var(--error-text, #fff);
+}
+
+.bot-config-button.delete:hover:not(:disabled) {
+  background-color: var(--error-hover, #d32f2f);
+}
+
+.bot-config-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.bot-config-info {
+  padding: 1rem;
+  background-color: var(--card-bg, #2a2a2a);
+  border-radius: 4px;
+  border-left: 3px solid var(--primary-color, #4a9eff);
+}
+
+.bot-config-info p {
+  margin-bottom: 0.5rem;
+  color: var(--text-color, #fff);
+}
+
+.bot-config-info ol {
+  margin-left: 1.5rem;
+  color: var(--text-secondary, #ccc);
+}
+
+.bot-config-info li {
+  margin-bottom: 0.5rem;
+  color: var(--text-secondary, #ccc);
+}
+
+.bot-config-info a {
+  color: var(--primary-color, #4a9eff);
+  text-decoration: none;
+}
+
+.bot-config-info a:hover {
+  text-decoration: underline;
+}
+

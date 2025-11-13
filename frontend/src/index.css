@@ -1,0 +1,130 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  /* Default theme colors - will be overridden by ThemeContext */
+  --primary-color: #4a9eff;
+  --secondary-color: #1a1a1a;
+  --background-color: #242424;
+  --text-color: #ffffff;
+  --text-secondary: #cccccc;
+  --border-color: #333333;
+  --card-bg: #2a2a2a;
+  --input-bg: #2a2a2a;
+  --button-bg: #4a4a4a;
+  --button-hover: #5a5a5a;
+  --hover-bg: #2a2a2a;
+  --active-bg: #2a2a2a;
+  
+  /* Default container colors - will be overridden by ThemeContext */
+  --card-bg: #2a2a2a;
+  --input-bg: #2a2a2a;
+  --border-color: #333333;
+  --hover-bg: #3a3a3a;
+  --text-secondary: #cccccc;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* By default, all elements should not show text cursor and should not be selectable */
+* {
+  cursor: default;
+  user-select: none;
+}
+
+/* Allow text cursor and selection only on actual input/textarea elements */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="search"],
+input[type="tel"],
+input[type="url"],
+input[type="color"],
+textarea,
+[contenteditable="true"],
+[contenteditable] {
+  cursor: text;
+  user-select: text;
+}
+
+/* Buttons and links should have pointer cursor */
+button,
+a,
+[role="button"],
+[role="link"],
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  cursor: pointer;
+}
+
+/* Disabled elements should show not-allowed */
+button:disabled,
+input:disabled,
+textarea:disabled,
+[disabled] {
+  cursor: not-allowed;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: var(--background-color, #242424);
+  color: var(--text-color, #ffffff);
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Global heading styles - consistent across all pages */
+h1 {
+  margin-bottom: 1rem;
+  font-size: 1.75rem;
+  color: var(--heading-color, var(--primary-color));
+  font-weight: 700;
+  border-bottom: 3px solid var(--heading-color, var(--primary-color));
+  padding-bottom: 0.5rem;
+  display: inline-block;
+}
+
+h2 {
+  color: var(--heading-color, var(--primary-color));
+  font-weight: 600;
+}
+
+/* Responsive heading sizes */
+@media (max-width: 1024px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+}
+
+@media (max-width: 640px) {
+  h1 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.4rem;
+  }
+}
+

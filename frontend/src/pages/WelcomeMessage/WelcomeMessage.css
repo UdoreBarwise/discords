@@ -1,0 +1,13 @@
+.welcome-message-page {
+  margin-bottom: 2rem;
+}
+
+.welcome-message-header {
+  margin-bottom: 2rem;
+}
+
+.welcome-message-subtitle {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+}
+

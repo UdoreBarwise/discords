@@ -1,0 +1,15 @@
+.leveling-page {
+  padding: 2rem;
+}
+
+.leveling-page h1 {
+  margin: 0 0 0.5rem 0;
+  color: var(--heading-color, var(--text-color, #fff));
+}
+
+.leveling-page-description {
+  margin: 0 0 2rem 0;
+  color: var(--text-secondary, #ccc);
+  font-size: 1rem;
+}
+

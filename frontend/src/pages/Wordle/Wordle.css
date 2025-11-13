@@ -1,0 +1,22 @@
+.wordle-page {
+  padding: 2rem;
+}
+
+.wordle-header {
+  margin-bottom: 2rem;
+}
+
+.wordle-header h1 {
+  margin: 0 0 0.5rem 0;
+  color: var(--text-color, #fff);
+}
+
+.wordle-subtitle {
+  color: var(--text-secondary, #ccc);
+  margin: 0;
+}
+
+.wordle-content {
+  max-width: 800px;
+}
+
