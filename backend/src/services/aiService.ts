@@ -2,7 +2,7 @@ import { botConfigRepository } from '../database/botConfigRepository.js'
 import { errorLogger } from './errorLogger.js'
 import { aiTrainingService } from './aiTrainingService.js'
 
-export type AIProvider = 'deepseek' | 'ollama' | 'lmstudio' | 'localai'
+export type AIProvider = 'deepseek' | 'ollama'
 export type AIPersonality = 'normal' | 'rude' | 'professional' | 'friendly' | 'sarcastic'
 
 interface AIMessage {
@@ -122,14 +122,12 @@ export const aiService = {
     
     // Determine if this is a cloud provider (requires API key) or local provider
     const isCloudProvider = aiProvider === 'deepseek'
-    const isLocalProvider = ['ollama', 'lmstudio', 'localai'].includes(aiProvider)
+    const isLocalProvider = aiProvider === 'ollama'
     
     // Set default model based on provider type (only if model is not set)
     let defaultModel = 'deepseek-chat'
     if (aiProvider === 'ollama') {
       defaultModel = 'llama2'
-    } else if (aiProvider === 'lmstudio' || aiProvider === 'localai') {
-      defaultModel = 'local-model'
     }
     
     const finalModel = aiModel || defaultModel
@@ -153,11 +151,7 @@ export const aiService = {
       throw new Error(`DeepSeek API key is required for cloud provider. Please configure your API key in settings.`)
     }
     
-    if (isLocalProvider && !aiProviderUrl && aiProvider !== 'ollama') {
-      // Ollama has a default URL, but other local providers need explicit URLs
-      const providerName = aiProvider === 'lmstudio' ? 'LM Studio' : 'LocalAI'
-      throw new Error(`${providerName} provider URL is required. Please configure the provider URL in settings.`)
-    }
+    // Ollama has a default URL, no need to check for other local providers
     
     // Increase temperature for rude personality to make it more unpredictable and less filtered
     // Both DeepSeek and Ollama need higher temperature to bypass safety filters
@@ -313,8 +307,8 @@ REMEMBER: If you see ANY forbidden phrase in your response, DELETE IT and replac
     
     // Add model identification if enabled (but after rude personality instructions)
     if (shouldShowModelInfo) {
-      const modelName = finalModel || (aiProvider === 'deepseek' ? 'deepseek-chat' : aiProvider === 'ollama' ? 'llama2' : 'local-model')
-      const providerName = aiProvider === 'deepseek' ? 'DeepSeek' : aiProvider === 'ollama' ? 'Ollama' : aiProvider === 'lmstudio' ? 'LM Studio' : 'LocalAI'
+      const modelName = finalModel || (aiProvider === 'deepseek' ? 'deepseek-chat' : 'llama2')
+      const providerName = aiProvider === 'deepseek' ? 'DeepSeek' : 'Ollama'
       
       // For rude personality, make identity responses toxic too
       if (aiPersonality === 'rude') {
@@ -344,8 +338,8 @@ REMEMBER: You are ${modelName} on ${providerName}. You are an AI, not a human. A
       console.log(`[AI Service] RUDE PERSONALITY - First 200 chars of prompt: ${systemPrompt.substring(0, 200)}`)
     }
     if (shouldShowModelInfo) {
-      const modelName = model || (aiProvider === 'deepseek' ? 'deepseek-chat' : aiProvider === 'ollama' ? 'llama2' : 'local-model')
-      const providerName = aiProvider === 'deepseek' ? 'DeepSeek' : aiProvider === 'ollama' ? 'Ollama' : aiProvider === 'lmstudio' ? 'LM Studio' : 'LocalAI'
+      const modelName = model || (aiProvider === 'deepseek' ? 'deepseek-chat' : 'llama2')
+      const providerName = aiProvider === 'deepseek' ? 'DeepSeek' : 'Ollama'
       console.log(`[AI Service] Identity verification ENABLED - Model: ${modelName}, Provider: ${providerName}`)
       console.log(`[AI Service] System prompt length: ${systemPrompt.length} chars`)
     }
@@ -412,12 +406,6 @@ CRITICAL VOCABULARY INSTRUCTION: The conversation history below contains previou
         case 'ollama':
           response = await this.callOllama(aiProviderUrl || 'http://localhost:11434', finalModel, messages, aiTemperature, maxTokens)
           break
-        case 'lmstudio':
-          response = await this.callLMStudio(aiProviderUrl || 'http://localhost:1234/v1', finalModel, messages, aiTemperature, maxTokens)
-          break
-        case 'localai':
-          response = await this.callLocalAI(aiProviderUrl || 'http://localhost:8080/v1', finalModel, messages, aiTemperature, maxTokens)
-          break
         default:
           throw new Error(`Unsupported AI provider: ${aiProvider}`)
       }
@@ -445,8 +433,7 @@ CRITICAL VOCABULARY INSTRUCTION: The conversation history below contains previou
         }
       } else if (isLocalProvider) {
         if (errorMessage.includes('ECONNREFUSED') || errorMessage.includes('Cannot connect')) {
-          const providerName = aiProvider === 'ollama' ? 'Ollama' : aiProvider === 'lmstudio' ? 'LM Studio' : 'LocalAI'
-          throw new Error(`${providerName} is not running or not accessible at ${aiProviderUrl || 'the configured URL'}. Please make sure ${providerName} is running and the URL is correct.`)
+          throw new Error(`Ollama is not running or not accessible at ${aiProviderUrl || 'http://localhost:11434'}. Please make sure Ollama is running and the URL is correct.`)
         }
       }
       
@@ -733,111 +720,6 @@ CRITICAL VOCABULARY INSTRUCTION: The conversation history below contains previou
     }
   },
 
-  async callLMStudio(
-    baseUrl: string,
-    model: string,
-    messages: AIMessage[],
-    temperature: number | string | null,
-    maxTokens: string | null
-  ): Promise<string> {
-    const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), 60000)
-    
-    try {
-      const response = await fetch(`${baseUrl}/chat/completions`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: model,
-          messages: messages,
-          temperature: typeof temperature === 'number' ? temperature : (temperature ? parseFloat(temperature) : 0.7),
-          max_tokens: maxTokens ? parseInt(maxTokens) : 2000,
-        }),
-        signal: controller.signal,
-      })
-      
-      clearTimeout(timeoutId)
-
-      if (!response.ok) {
-        const errorText = await response.text().catch(() => 'Unknown error')
-        const error = new Error(`LM Studio API error: ${response.status} ${response.statusText} - ${errorText}`)
-        await errorLogger.logAIError(error, 'lmstudio', model, `URL: ${baseUrl}`).catch(() => {})
-        throw error
-      }
-
-      const data = (await response.json()) as APIResponse
-      const aiResponse = data.choices?.[0]?.message?.content
-
-      if (!aiResponse) {
-        throw new Error('No response from LM Studio API')
-      }
-
-      return aiResponse
-    } catch (error: any) {
-      clearTimeout(timeoutId)
-      if (error.name === 'AbortError') {
-        const timeoutError = new Error('LM Studio API request timed out after 60 seconds. Make sure LM Studio is running and the model is loaded.')
-        await errorLogger.logAIError(timeoutError, 'lmstudio', model, `URL: ${baseUrl}`).catch(() => {})
-        throw timeoutError
-      }
-      throw error
-    }
-  },
-
-  async callLocalAI(
-    baseUrl: string,
-    model: string,
-    messages: AIMessage[],
-    temperature: number | string | null,
-    maxTokens: string | null
-  ): Promise<string> {
-    const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), 60000)
-    
-    try {
-      const response = await fetch(`${baseUrl}/chat/completions`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: model,
-          messages: messages,
-          temperature: typeof temperature === 'number' ? temperature : (temperature ? parseFloat(temperature) : 0.7),
-          max_tokens: maxTokens ? parseInt(maxTokens) : 2000,
-        }),
-        signal: controller.signal,
-      })
-      
-      clearTimeout(timeoutId)
-
-      if (!response.ok) {
-        const errorText = await response.text().catch(() => 'Unknown error')
-        const error = new Error(`LocalAI API error: ${response.status} ${response.statusText} - ${errorText}`)
-        await errorLogger.logAIError(error, 'localai', model, `URL: ${baseUrl}`).catch(() => {})
-        throw error
-      }
-
-      const data = (await response.json()) as APIResponse
-      const aiResponse = data.choices?.[0]?.message?.content
-
-      if (!aiResponse) {
-        throw new Error('No response from LocalAI API')
-      }
-
-      return aiResponse
-    } catch (error: any) {
-      clearTimeout(timeoutId)
-      if (error.name === 'AbortError') {
-        const timeoutError = new Error('LocalAI API request timed out after 60 seconds. Make sure LocalAI is running and the model is loaded.')
-        await errorLogger.logAIError(timeoutError, 'localai', model, `URL: ${baseUrl}`).catch(() => {})
-        throw timeoutError
-      }
-      throw error
-    }
-  },
 
   async isEnabled(): Promise<boolean> {
     const enabled = await botConfigRepository.get('ai_enabled')

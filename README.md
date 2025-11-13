@@ -510,7 +510,7 @@ kaasbot/
 - **Backend:** Node.js, Express, TypeScript
 - **Database:** PostgreSQL
 - **Bot Framework:** discord.js
-- **AI Providers:** DeepSeek, Ollama, LM Studio, LocalAI
+- **AI Providers:** DeepSeek, Ollama
 
 ## Troubleshooting
 

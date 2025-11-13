@@ -7,8 +7,6 @@ import './AIGlobalSettings.css'
 const PROVIDER_DEFAULT_URLS: Record<AIProvider, string> = {
   deepseek: '',
   ollama: 'http://localhost:11434',
-  lmstudio: 'http://localhost:1234/v1',
-  localai: 'http://localhost:8080/v1',
 }
 
 export default function AIGlobalSettings() {
@@ -271,8 +269,6 @@ export default function AIGlobalSettings() {
           >
             <option value="deepseek">DeepSeek (Cloud)</option>
             <option value="ollama">Ollama (Local)</option>
-            <option value="lmstudio">LM Studio (Local)</option>
-            <option value="localai">LocalAI (Local)</option>
           </select>
         </div>
 

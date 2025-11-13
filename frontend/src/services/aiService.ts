@@ -1,6 +1,6 @@
 import { apiClient } from './apiClient'
 
-export type AIProvider = 'deepseek' | 'ollama' | 'lmstudio' | 'localai'
+export type AIProvider = 'deepseek' | 'ollama'
 export type AIPersonality = 'normal' | 'rude' | 'professional' | 'friendly' | 'sarcastic'
 
 export interface AIConfig {
@@ -119,8 +119,6 @@ export const aiService = {
       const fallback: Record<AIProvider, string[]> = {
         deepseek: ['deepseek-chat', 'deepseek-coder', 'deepseek-reasoner'],
         ollama: [],
-        lmstudio: ['local-model'],
-        localai: ['gpt-3.5-turbo'],
       }
       return fallback[provider] || []
     }

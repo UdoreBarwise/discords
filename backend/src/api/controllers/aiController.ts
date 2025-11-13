@@ -79,14 +79,14 @@ export const aiController = {
 
       // Save the provider (use auto-detected one if available, otherwise use explicit one)
       if (finalProvider !== undefined) {
-        const validProviders: AIProvider[] = ['deepseek', 'ollama', 'lmstudio', 'localai']
+        const validProviders: AIProvider[] = ['deepseek', 'ollama']
         if (validProviders.includes(finalProvider)) {
           await botConfigRepository.set('ai_provider', finalProvider)
         } else {
           return res.status(400).json({ error: 'Invalid provider' })
         }
       } else if (provider !== undefined) {
-        const validProviders: AIProvider[] = ['deepseek', 'ollama', 'lmstudio', 'localai']
+        const validProviders: AIProvider[] = ['deepseek', 'ollama']
         if (validProviders.includes(provider)) {
           await botConfigRepository.set('ai_provider', provider)
         } else {
@@ -189,10 +189,6 @@ export const aiController = {
           console.error('Error fetching Ollama models:', error)
           res.status(500).json({ error: `Failed to connect to Ollama: ${error.message}` })
         }
-      } else if (provider === 'lmstudio' || provider === 'localai') {
-        // For LM Studio and LocalAI, we can't easily list models via API
-        // Return empty array and let user enter model name manually
-        res.json({ models: [] })
       } else {
         // DeepSeek - return static list
         res.json({ models: ['deepseek-chat', 'deepseek-coder', 'deepseek-reasoner'] })

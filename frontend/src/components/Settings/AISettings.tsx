@@ -9,8 +9,6 @@ import '../DiceGame/DiceGameConfig.css'
 const PROVIDER_DEFAULT_URLS: Record<AIProvider, string> = {
   deepseek: '',
   ollama: 'http://localhost:11434',
-  lmstudio: 'http://localhost:1234/v1',
-  localai: 'http://localhost:8080/v1',
 }
 
 export default function AISettings() {
@@ -323,7 +321,7 @@ export default function AISettings() {
       <div className="settings-subsection">
         <h3>AI Provider</h3>
         <p className="settings-description">
-          Choose which AI provider to use. Local providers (Ollama, LM Studio, LocalAI) run on your computer and are free.
+          Choose which AI provider to use. Ollama runs locally on your computer and is free.
         </p>
 
         <div className="settings-field">
@@ -336,14 +334,10 @@ export default function AISettings() {
           >
             <option value="deepseek">DeepSeek (Cloud - Requires API Key)</option>
             <option value="ollama">Ollama (Local - Free)</option>
-            <option value="lmstudio">LM Studio (Local - Free)</option>
-            <option value="localai">LocalAI (Local - Free)</option>
           </select>
           <p className="settings-description" style={{ marginTop: '0.5rem', fontSize: '0.85rem' }}>
             {provider === 'deepseek' && 'Cloud-based AI service. Requires an API key from DeepSeek.'}
             {provider === 'ollama' && 'Ollama is the easiest local AI option. Download from https://ollama.com and run models locally for free.'}
-            {provider === 'lmstudio' && 'LM Studio provides a GUI for running local models. Download from https://lmstudio.ai'}
-            {provider === 'localai' && 'LocalAI is a self-hosted AI server. More advanced setup required.'}
           </p>
         </div>
 
@@ -653,8 +647,6 @@ export default function AISettings() {
                   : 'Enter the model name you downloaded (e.g., llama2, mistral, wizard-vicuna-uncensored)'}
               </>
             )}
-            {provider === 'lmstudio' && 'Enter the model name you have loaded in LM Studio.'}
-            {provider === 'localai' && 'Enter the model name configured in your LocalAI instance.'}
           </p>
           {provider === 'ollama' && availableModels.length === 0 && (
             <button

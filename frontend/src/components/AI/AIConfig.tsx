@@ -407,8 +407,6 @@ export default function AIConfig() {
                   <option value="">Use global ({globalConfig?.provider || 'deepseek'})</option>
                   <option value="deepseek">DeepSeek</option>
                   <option value="ollama">Ollama</option>
-                  <option value="lmstudio">LM Studio</option>
-                  <option value="localai">LocalAI</option>
                 </select>
               </div>
               
@@ -427,7 +425,7 @@ export default function AIConfig() {
                         fetchChannelModels(selectedChannelForConfig, provider, providerUrl)
                       }
                     }}
-                    placeholder={channelConfigs[selectedChannelForConfig]?.provider === 'ollama' ? 'http://localhost:11434' : channelConfigs[selectedChannelForConfig]?.provider === 'lmstudio' ? 'http://localhost:1234/v1' : 'http://localhost:8080/v1'}
+                    placeholder={channelConfigs[selectedChannelForConfig]?.provider === 'ollama' ? 'http://localhost:11434' : ''}
                     style={{
                       width: '100%',
                       padding: '0.5rem',
